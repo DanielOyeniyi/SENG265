@@ -5,12 +5,27 @@
  *  @author Jose O.
  *  @author Saasha J.
  *  @author Victoria L.
- *  @author STUDENT_NAME
+ *  @author Daniel O. 
  *
  */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+void use_case1(char *argv[])
+{
+	printf("Usecase1");
+}
+
+void use_case2(char *argv[])
+{
+	printf("Usecase2");
+}
+
+void use_case3(char *argv[])
+{
+	printf("Usecase3");
+}
 
 /**
  * Function: main
@@ -24,6 +39,17 @@
  */
 int main(int argc, char *argv[])
 {
-    // TODO: your code.
+	switch(argc)				// cases are determined by the number of arguments entered 
+	{
+		case 4:
+		    use_case1(argv);
+		    break;
+		case 5:
+		    use_case2(argv);
+		    break;	
+		case 6:
+		    use_case3(argv);
+		    break;
+	}
     exit(0);
 }
