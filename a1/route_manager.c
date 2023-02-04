@@ -117,7 +117,7 @@ struct input extract_args_helper(char entry[], char val[], struct input cmd_args
 void process_file(struct input cmd_args) {
 	FILE *ofp;
 	FILE *ifp;
-	int line_size = 400;
+	int line_size = 1024;					//line buffer size recommended by instructor
 	char line[line_size];
 	struct line_data curr_line;
 	
