@@ -280,8 +280,8 @@ void write_file(FILE *ofp, struct input cmd_args, struct line_data curr_line) {
 			   !strcmp(cmd_args.dest_country, curr_line.to_airport_country)) {
 				if(ftell(ofp) == 0) {
 					fprintf(ofp, "FLIGHTS FROM %s TO %s, %s:\n", cmd_args.src_country,
-										    cmd_args.dest_city,
-										    cmd_args.dest_country);
+										     cmd_args.dest_city,
+										     cmd_args.dest_country);
 				} 
 
 				fprintf(ofp, "AIRLINE: %s (%s) ORIGIN: %s (%s), %s\n", curr_line.airline_name,
