@@ -12,38 +12,42 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define LINE_BUFF 1024
+#define STR_BUFF 100
+#define OUTPUT_FILE "output.txt"
+
 struct input {
 	int input_case;
-	char data[100];
-	char airline[100];
-	char src_city[100];
-	char src_country[100];
-	char dest_city[100];
-	char dest_country[100];
+	char data[STR_BUFF];
+	char airline[STR_BUFF];
+	char src_city[STR_BUFF];
+	char src_country[STR_BUFF];
+	char dest_city[STR_BUFF];
+	char dest_country[STR_BUFF];
 };
 
 struct line_data {
-	char airline_name[100];
-	char airline_icao_unique_code[100];
-	char airline_country[100];
-	char from_airport_name[100];
-	char from_airport_city[100];
-	char from_airport_country[100];
-	char from_airport_icao_unique_code[100];
-	char to_airport_name[100];
-	char to_airport_city[100];
-	char to_airport_country[100];
-	char to_airport_icao_unique_code[100];
+	char airline_name[STR_BUFF];
+	char airline_icao_unique_code[STR_BUFF];
+	char airline_country[STR_BUFF];
+	char from_airport_name[STR_BUFF];
+	char from_airport_city[STR_BUFF];
+	char from_airport_country[STR_BUFF];
+	char from_airport_icao_unique_code[STR_BUFF];
+	char to_airport_name[STR_BUFF];
+	char to_airport_city[STR_BUFF];
+	char to_airport_country[STR_BUFF];
+	char to_airport_icao_unique_code[STR_BUFF];
 };
 
 // function prototypes
-struct input extract_args(int argc, char *argv[], struct input cmd_args); 
-struct input extract_args_helper(char entry[], char val[], struct input cmd_args); 
-void proccess_file(struct input cmd_args); 
-struct line_data extract_line_data(char line[], struct line_data curr_line); 
-struct line_data splice_copy(char line[], struct line_data curr_line, int start_index, int end_index, int column);
-struct line_data splice_copy_helper(struct line_data curr_line, int char_index, int column, char val);
-void write_file(FILE *ofp, struct input cmd_args, struct line_data curr_line);
+struct input extract_args(int, char *[], struct input); 
+struct input extract_args_helper(char [], char [], struct input); 
+void proccess_file(struct input); 
+struct line_data extract_line_data(char [], struct line_data); 
+struct line_data splice_copy(char [], struct line_data, int, int, int);
+struct line_data splice_copy_helper(struct line_data, int, int, char);
+void write_file(FILE *, struct input, struct line_data);
 
 /**
  * Function: extract_args
@@ -57,8 +61,8 @@ void write_file(FILE *ofp, struct input cmd_args, struct line_data curr_line);
  *
  */
 struct input extract_args(int argc, char *argv[], struct input cmd_args) {
-	char entry[100];
-	char val[100];
+	char entry[STR_BUFF];
+	char val[STR_BUFF];
 	for (int i = 1; i < argc; i++) {
 		sscanf(argv[i], "--%[^=]=%[^=]", entry, val);		//spliting the argument string to obtain its value.
 		cmd_args = extract_args_helper(entry, val, cmd_args);
@@ -117,14 +121,13 @@ struct input extract_args_helper(char entry[], char val[], struct input cmd_args
 void process_file(struct input cmd_args) {
 	FILE *ofp;
 	FILE *ifp;
-	int line_size = 1024;					//line buffer size recommended by instructor
-	char line[line_size];
+	char line[LINE_BUFF];
 	struct line_data curr_line;
 	
-	ofp = fopen("output.txt", "w");
+	ofp = fopen(OUTPUT_FILE, "w");
 	ifp = fopen(cmd_args.data, "r");
 	if(ifp != NULL) {
-		while(fgets(line, line_size, ifp) != NULL) {
+		while(fgets(line, LINE_BUFF, ifp) != NULL) {
 			curr_line = extract_line_data(line, curr_line);
 			write_file(ofp, cmd_args, curr_line);
 		}
