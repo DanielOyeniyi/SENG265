@@ -88,7 +88,7 @@ def question3(airline_df: pd.DataFrame, airports_df: pd.DataFrame, routes_df: pd
 
 def question4(airports_df: pd.DataFrame, routes_df: pd.DataFrame, question: str, graph_type: str) -> None:
     '''
-    merges input data frames in order to obtain a data frame containing the top 10 destination cities 
+    merges input data frames in order to obtain a data frame containing the top 15 destination cities 
 
     param airport_df: dataframe containing information on airports
     param routes_df: dataframe containing formation on routes
@@ -257,7 +257,7 @@ def process_data(answer: pd.DataFrame, question: str, graph_type: str) -> None:
             plt.ylabel("Frequency")
         
     elif question == 'q4':
-        plt.title("Top 10 Destination Cities")
+        plt.title("Top 15 Destination Cities")
         if graph_type == 'bar':
             plt.xlabel("Cities")
             plt.ylabel("Frequency")
