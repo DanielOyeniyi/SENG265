@@ -1,0 +1,297 @@
+/** @file route_manager.c
+ *  @brief A small program to analyze airline routes data.
+ *  @author Mike Z.
+ *  @author Felipe R.
+ *  @author Hausi M.
+ *  @author Jose O.
+ *  @author Saasha J.
+ *  @author Victoria L.
+ *  @author STUDENT_NAME
+ *
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "list.h"
+
+#define OUTPUT_FILE "output.txt"
+
+// TODO: Make sure to adjust this based on the input files given
+#define MAX_LINE_LEN 1024 
+
+// structs
+typedef struct {
+	char* airline_name;	
+	char* airline_icao_unique_code;	
+	char* airline_country;	
+	char* from_airport_name;	
+	char* from_airport_city;	
+	char* from_airport_country;
+	char* from_airport_icao_unique_code;	
+	char* to_airport_name;	
+	char* to_airport_city;	
+	char* to_airport_country;
+	char* to_airport_icao_unique_code;	
+} Route;
+
+// function prototypes
+void process_file(char*[], FILE*, FILE*);
+void store_column_val(Route*, char*, int);
+void initialize_route(Route*); 
+void free_route(Route*);
+void q1(char*[], FILE*, FILE*);
+void q2(char*[], FILE*, FILE*);
+void q3(char*[], FILE*, FILE*);
+
+void process_file(char* argv[], FILE* in_file, FILE* out_file) {
+	/*
+	Route* test;
+	test = (Route*)malloc(sizeof(Route));
+	test->airline_name = (char*)malloc(sizeof(char) * MAX_LINE_LEN);
+	strcpy(test->airline_name,"hello");
+	printf("%s\n", test->airline_name);
+	free(test->airline_name);
+	free(test);
+	*/
+	
+	node_t* list = NULL;
+
+	char* line; 
+	line = (char*)malloc(sizeof(char) * MAX_LINE_LEN);
+
+	// getting rid of first entry
+	fgets(line, MAX_LINE_LEN, in_file);
+	while(line != NULL) {
+		// there are 13 columns  
+		Route* data;	
+		data = (Route*)malloc(sizeof(Route));
+		initialize_route(data);
+		free_route(data);
+		for (int i = 0; i < 13; i++) {
+			if (fgets(line, MAX_LINE_LEN, in_file) != NULL) {
+				char* token;
+				token = strchr(line, ':');
+
+				// getting rid of ':' and white space
+				token = token + 2; 
+		//		store_column_val(data, token, i);
+			}
+		}
+		if (fgets(line, MAX_LINE_LEN, in_file) == NULL)
+			break;	
+
+	//	node_t* new;
+	//	new = new_node(data); 
+
+		
+	}
+
+	free(line);
+/*	
+	node_t* curr = NULL;
+	while (curr!=NULL) {
+		curr = list->next;
+		free_route(list->data);
+		free(list);
+	}
+	*/
+	// argv[1] is the data file that we are extracting from 
+	// argv[2] is the question the program needs to answer
+	// argv[3] is the number of elements displayed in final result
+	if(!strcmp(argv[2],"--QUESTION=1"))
+		q1(argv, in_file, out_file);
+
+	if(!strcmp(argv[2],"--QUESTION=2"))
+		q2(argv, in_file, out_file);
+
+	if(!strcmp(argv[2],"--QUESTION=3"))
+		q3(argv, in_file, out_file);
+
+}
+
+void initialize_route(Route* data) {
+	data->airline_name = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->airline_icao_unique_code = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->airline_country = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->from_airport_name = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->from_airport_city = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->from_airport_country = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->from_airport_icao_unique_code = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->to_airport_name = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->to_airport_city = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->to_airport_country = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+	data->to_airport_icao_unique_code = (char*)malloc(sizeof(char) * MAX_LINE_LEN);	
+}
+
+void free_route(Route* data) {
+	free(data->airline_name);
+	free(data->airline_icao_unique_code);	
+	free(data->airline_country);	
+	free(data->from_airport_name);	
+	free(data->from_airport_city);	
+	free(data->from_airport_country);	
+	free(data->from_airport_icao_unique_code);	
+	free(data->to_airport_name);	
+	free(data->to_airport_city);	
+	free(data->to_airport_country);	
+	free(data->to_airport_icao_unique_code);	
+	free(data);
+}
+
+void store_column_val(Route* data, char* token, int i) {
+	// altitude is not used so we do not store it
+	switch(i) {
+		case 0:
+			strcpy(data->airline_name, token);	
+			break;
+		case 1:
+			strcpy(data->airline_icao_unique_code, token);	
+			break;
+		case 2:
+			strcpy(data->airline_country, token);	
+			break;
+		case 3:
+			strcpy(data->from_airport_name, token);	
+			break;
+		case 4:
+			strcpy(data->from_airport_city, token);	
+			break;
+		case 5:
+			strcpy(data->from_airport_country, token);	
+			break;
+		case 6:
+			strcpy(data->from_airport_icao_unique_code, token);	
+			break;
+		case 8:
+			strcpy(data->to_airport_name, token);	
+			break;
+		case 9:
+			strcpy(data->to_airport_city, token);	
+			break;
+		case 10:
+			strcpy(data->to_airport_country, token);	
+			break;
+		case 11:
+			strcpy(data->to_airport_icao_unique_code, token);	
+			break;
+	}
+}
+
+void q1(char* argv[], FILE* in_file, FILE* out_file) {
+	char* line; 
+	line = (char*)malloc(sizeof(char) * MAX_LINE_LEN);
+	free(line);
+}
+
+void q2(char* argv[], FILE* in_file, FILE* out_file) {
+	char* line; 
+	line = (char*)malloc(sizeof(char) * MAX_LINE_LEN);
+	free(line);
+}
+
+void q3(char* argv[], FILE* in_file, FILE* out_file) {
+	char* line; 
+	line = (char*)malloc(sizeof(char) * MAX_LINE_LEN);
+	free(line);
+}
+
+/**
+ * @brief Serves as an incremental counter for navigating the list.
+ *
+ * @param p The pointer of the node to print.
+ * @param arg The pointer of the index.
+ *
+ */
+void inccounter(node_t *p, void *arg)
+{
+    int *ip = (int *)arg;
+    (*ip)++;
+}
+
+/**
+ * @brief Allows to print out the content of a node.
+ *
+ * @param p The pointer of the node to print.
+ * @param arg The format of the string.
+ *
+ */
+void print_node(node_t *p, void *arg)
+{
+    char *fmt = (char *)arg;
+    printf(fmt, p->word);
+}
+
+/**
+ * @brief Allows to print each node in the list.
+ *
+ * @param l The first node in the list
+ *
+ */
+void analysis(node_t *l)
+{
+    int len = 0;
+
+    apply(l, inccounter, &len);
+    printf("Number of words: %d\n", len);
+
+    apply(l, print_node, "%s\n");
+}
+
+/**
+ * @brief The main function and entry point of the program.
+ *
+ * @param argc The number of arguments passed to the program.
+ * @param argv The list of arguments passed to the program.
+ * @return int 0: No errors; 1: Errors produced.
+ *
+ */
+int main(int argc, char *argv[])
+{
+	FILE *in_file;
+	FILE *out_file;
+
+	out_file = fopen(OUTPUT_FILE, "w");
+
+	char* token;
+	token = strchr(argv[1], '=');
+	token++;
+	in_file = fopen(token, "r");
+
+	process_file(argv, in_file, out_file);
+	
+	fclose(in_file);
+	fclose(out_file);
+
+/*	
+    // Initial dummy code
+    char *line = NULL;
+    char *t;
+    int num = 0;
+    node_t *list = NULL;
+    line = (char *)malloc(sizeof(char) * MAX_LINE_LEN);
+    strcpy(line, "this is the starting point for A3.");
+
+    // Creating the nodes for the ordered list
+    t = strtok(line, " ");
+    while (t)
+    {
+        num++;
+        list = add_inorder(list, new_node(t));
+        t = strtok(NULL, " ");
+    }
+
+    // Printing out the content of the sorted list
+    analysis(list);
+
+    // Releasing the space allocated for the list and other emalloc'ed elements
+    node_t *temp_n = NULL;
+    for (; list != NULL; list = temp_n)
+    {
+        temp_n = list->next;
+        free(list->word);
+        free(list);
+    }
+    free(line);
+*/
+    exit(0);
+}
